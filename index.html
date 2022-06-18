@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html>
+    <body>
+        AutoWater
+        <button id="toggle">Toggle</button>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+					
+            var socket = io(); document.getElementById("toggle").addEventListener("click", function () {
+                socket.emit('toggle');
+            })
+            socket.on('toggle', function () {
+                let url = 'http://10.0.0.186/';
+                fetch(url).then(function(response) {return response.text()}).then(function(text) {
+                    let newStatus = (text.split(/[<|>]/)[4] == 0) ? 1 : 0;
+                    let url = 'http://10.0.0.186/gpio/' + newStatus;
+                    fetch(url);
+                });
+            })
+        </script>
+    </body>
+</html>
